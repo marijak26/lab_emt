@@ -28,6 +28,11 @@ public class CountryServiceImpl implements CountryService {
     }
 
     @Override
+    public Optional<Country> findByName(String name) {
+        return countryRepository.findByName(name);
+    }
+
+    @Override
     public Optional<Country> save(CountryDto country) {
         return Optional.of(countryRepository.save(new Country(country.getName(), country.getContinent())));
     }

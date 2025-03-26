@@ -33,9 +33,9 @@ public class HostServiceImpl implements HostService {
     @Override
     public Optional<Host> save(HostDto host) {
         if (host.getCountry() != null &&
-                countryService.findById(host.getCountry()).isPresent()) {
+                countryService.findByName(host.getCountry()).isPresent()) {
             return Optional.of(
-                    hostRepository.save(new Host(host.getName(), host.getSurname(), countryService.findById(host.getCountry()).get())));
+                    hostRepository.save(new Host(host.getName(), host.getSurname(), countryService.findByName(host.getCountry()).get())));
         }
         return Optional.empty();
     }
@@ -49,8 +49,8 @@ public class HostServiceImpl implements HostService {
             if (host.getSurname() != null) {
                 existingHost.setSurname(host.getSurname());
             }
-            if (host.getCountry() != null && countryService.findById(host.getCountry()).isPresent()) {
-                existingHost.setCountry(countryService.findById(host.getCountry()).get());
+            if (host.getCountry() != null && countryService.findByName(host.getCountry()).isPresent()) {
+                existingHost.setCountry(countryService.findByName(host.getCountry()).get());
             }
             return hostRepository.save(existingHost);
         });

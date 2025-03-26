@@ -2,6 +2,7 @@ package mk.finki.ukim.lab_emt.service.impl;
 
 import mk.finki.ukim.lab_emt.model.Stay;
 import mk.finki.ukim.lab_emt.model.dto.StayDto;
+import mk.finki.ukim.lab_emt.model.exceptions.StayIsAlreadyRentedException;
 import mk.finki.ukim.lab_emt.repository.StayRepository;
 import mk.finki.ukim.lab_emt.service.HostService;
 import mk.finki.ukim.lab_emt.service.StayService;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class StayServiceImpl implements StayService {
@@ -22,6 +24,11 @@ public class StayServiceImpl implements StayService {
     @Override
     public List<Stay> findAll() {
         return stayRepository.findAll();
+    }
+
+    @Override
+    public List<Stay> findFree() {
+        return stayRepository.findAll().stream().filter(stay -> !stay.isRented()).collect(Collectors.toList());
     }
 
     @Override
@@ -66,5 +73,17 @@ public class StayServiceImpl implements StayService {
     @Override
     public void deleteById(Long stayId) {
         stayRepository.deleteById(stayId);
+    }
+
+    @Override
+    public void markStayAsRented(Long stayId) {
+        Stay stayToBeRented = stayRepository.findById(stayId).orElseThrow();
+        if(!stayToBeRented.isRented()) {
+            stayToBeRented.setRented(true);
+            stayRepository.save(stayToBeRented);
+        }
+        else{
+            throw new StayIsAlreadyRentedException(stayId);
+        }
     }
 }
