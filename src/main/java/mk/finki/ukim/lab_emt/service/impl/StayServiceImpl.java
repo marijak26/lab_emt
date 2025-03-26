@@ -3,6 +3,7 @@ package mk.finki.ukim.lab_emt.service.impl;
 import mk.finki.ukim.lab_emt.model.Stay;
 import mk.finki.ukim.lab_emt.model.dto.StayDto;
 import mk.finki.ukim.lab_emt.model.exceptions.StayIsAlreadyRentedException;
+import mk.finki.ukim.lab_emt.model.exceptions.StayNotFoundException;
 import mk.finki.ukim.lab_emt.repository.StayRepository;
 import mk.finki.ukim.lab_emt.service.HostService;
 import mk.finki.ukim.lab_emt.service.StayService;
@@ -76,14 +77,15 @@ public class StayServiceImpl implements StayService {
     }
 
     @Override
-    public void markStayAsRented(Long stayId) {
-        Stay stayToBeRented = stayRepository.findById(stayId).orElseThrow();
-        if(!stayToBeRented.isRented()) {
-            stayToBeRented.setRented(true);
-            stayRepository.save(stayToBeRented);
+    public Stay markStayAsRented(Long stayId) {
+        Stay stayToBeRented = stayRepository.findById(stayId).orElseThrow(() -> new StayNotFoundException(stayId));
+        if(stayToBeRented.isRented()) {
+            throw new StayIsAlreadyRentedException(stayId);
+
         }
         else{
-            throw new StayIsAlreadyRentedException(stayId);
+            stayToBeRented.setRented(true);
+            return stayRepository.save(stayToBeRented);
         }
     }
 }

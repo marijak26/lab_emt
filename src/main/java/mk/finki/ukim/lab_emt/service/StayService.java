@@ -13,5 +13,5 @@ public interface StayService {
     Optional<Stay> save(StayDto stay);
     Optional<Stay> update(Long stayId, StayDto stay);
     void deleteById(Long stayId);
-    void markStayAsRented(Long stayId);
+    Stay markStayAsRented(Long stayId);
 }
