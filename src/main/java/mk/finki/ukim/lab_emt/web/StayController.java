@@ -60,9 +60,9 @@ public class StayController {
 
     @PatchMapping("/rent/{id}")
     public ResponseEntity<Stay> rent(@PathVariable Long id) {
-        if (stayService.findById(id).isPresent()) {
-            stayService.markStayAsRented(id);
-            return ResponseEntity.ok().build();
+        if(stayService.findById(id).isPresent()) {
+            Stay updatedStay = stayService.markStayAsRented(id);
+            return ResponseEntity.ok(updatedStay);
         }
         else{
             return ResponseEntity.notFound().build();
