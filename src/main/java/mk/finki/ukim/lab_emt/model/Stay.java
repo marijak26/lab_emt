@@ -25,6 +25,7 @@ public class Stay {
     private Host host;
 
     private Integer numRooms;
+    private boolean isRented;
 
     public Stay(String name, Category category, Host host, Integer numRooms) {
         this.name = name;

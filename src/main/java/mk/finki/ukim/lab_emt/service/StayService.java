@@ -8,8 +8,10 @@ import java.util.Optional;
 
 public interface StayService {
     List<Stay> findAll();
+    List<Stay> findFree();
     Optional<Stay> findById(Long stayId);
     Optional<Stay> save(StayDto stay);
     Optional<Stay> update(Long stayId, StayDto stay);
     void deleteById(Long stayId);
+    void markStayAsRented(Long stayId);
 }

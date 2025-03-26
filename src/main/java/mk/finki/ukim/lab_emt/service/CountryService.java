@@ -10,6 +10,7 @@ import java.util.Optional;
 public interface CountryService {
     List<Country> findAll();
     Optional<Country> findById(Long countryId);
+    Optional<Country> findByName(String name);
     Optional<Country> save(CountryDto country);
     Optional<Country> update(Long countryId, CountryDto country);
 }

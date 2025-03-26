@@ -22,6 +22,11 @@ public class StayController {
         return stayService.findAll();
     }
 
+    @GetMapping("/free")
+    public List<Stay> findFree() {
+        return stayService.findFree();
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Stay> findById(@PathVariable Long id) {
         return stayService.findById(id)
@@ -49,6 +54,17 @@ public class StayController {
             stayService.deleteById(id);
             return ResponseEntity.ok().build();
         } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PatchMapping("/rent/{id}")
+    public ResponseEntity<Stay> rent(@PathVariable Long id) {
+        if (stayService.findById(id).isPresent()) {
+            stayService.markStayAsRented(id);
+            return ResponseEntity.ok().build();
+        }
+        else{
             return ResponseEntity.notFound().build();
         }
     }
