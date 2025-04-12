@@ -1,9 +1,14 @@
 package mk.finki.ukim.lab_emt.service.impl;
 
+import jakarta.transaction.Transactional;
+import mk.finki.ukim.lab_emt.model.Guest;
 import mk.finki.ukim.lab_emt.model.Host;
+import mk.finki.ukim.lab_emt.model.dto.GuestDto;
 import mk.finki.ukim.lab_emt.model.dto.HostDto;
+import mk.finki.ukim.lab_emt.model.exceptions.HostNotFoundException;
 import mk.finki.ukim.lab_emt.repository.HostRepository;
 import mk.finki.ukim.lab_emt.service.CountryService;
+import mk.finki.ukim.lab_emt.service.GuestService;
 import mk.finki.ukim.lab_emt.service.HostService;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +19,12 @@ import java.util.Optional;
 public class HostServiceImpl implements HostService {
     private final HostRepository hostRepository;
     private final CountryService countryService;
+    private final GuestService guestService;
 
-    public HostServiceImpl(HostRepository hostRepository, CountryService countryService) {
+    public HostServiceImpl(HostRepository hostRepository, CountryService countryService, GuestService guestService) {
         this.hostRepository = hostRepository;
         this.countryService = countryService;
+        this.guestService = guestService;
     }
 
     @Override
@@ -56,4 +63,29 @@ public class HostServiceImpl implements HostService {
         });
 
     }
+
+    @Override
+    public List<Guest> findGuestsByHostId(Long hostId) {
+        return findById(hostId).orElseThrow(() -> new HostNotFoundException(hostId)).getGuests();
+    }
+
+
+    @Transactional
+    @Override
+    public Optional<Host> saveGuest(Long hostId, GuestDto guest) {
+        return hostRepository.findById(hostId)
+                .map(existingHost -> {
+                    if(guest.getCountry() != null && countryService.findByName(guest.getCountry()).isPresent()) {
+
+                        Optional<Guest> newGuest = guestService.save(guest);
+                        if (newGuest.isPresent()) {
+                            Guest guestToSave = newGuest.get();
+                            existingHost.getGuests().add(guestToSave);
+                            guestToSave.getHosts().add(existingHost);
+                        }
+                    }
+                    return hostRepository.save(existingHost);
+                });
+    }
+
 }

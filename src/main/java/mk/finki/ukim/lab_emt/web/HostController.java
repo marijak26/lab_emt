@@ -1,6 +1,8 @@
 package mk.finki.ukim.lab_emt.web;
 
+import mk.finki.ukim.lab_emt.model.Guest;
 import mk.finki.ukim.lab_emt.model.Host;
+import mk.finki.ukim.lab_emt.model.dto.GuestDto;
 import mk.finki.ukim.lab_emt.model.dto.HostDto;
 import mk.finki.ukim.lab_emt.service.HostService;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,11 @@ public class HostController {
         return hostService.findAll();
     }
 
+    @GetMapping("/getGuests")
+    public List<Guest> findGuestsByHostId(Long hostId) {
+        return hostService.findGuestsByHostId(hostId);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Host> findById(@PathVariable Long id) {
         return hostService.findById(id)
@@ -34,6 +41,13 @@ public class HostController {
         return hostService.save(host)
                 .map(c -> ResponseEntity.ok().body(c))
                 .orElseGet(() -> ResponseEntity.badRequest().build());
+    }
+
+    @PostMapping("/saveGuest/{id}")
+    public ResponseEntity<Host> saveGuest(@PathVariable Long id, @RequestBody GuestDto guest) {
+        return hostService.saveGuest(id, guest)
+                .map(host -> ResponseEntity.ok().body(host))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PutMapping("/edit/{id}")

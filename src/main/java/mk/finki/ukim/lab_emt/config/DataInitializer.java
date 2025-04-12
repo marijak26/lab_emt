@@ -1,11 +1,9 @@
 package mk.finki.ukim.lab_emt.config;
 
 import jakarta.annotation.PostConstruct;
-import mk.finki.ukim.lab_emt.model.Category;
-import mk.finki.ukim.lab_emt.model.Country;
-import mk.finki.ukim.lab_emt.model.Host;
-import mk.finki.ukim.lab_emt.model.Stay;
+import mk.finki.ukim.lab_emt.model.*;
 import mk.finki.ukim.lab_emt.repository.CountryRepository;
+import mk.finki.ukim.lab_emt.repository.GuestRepository;
 import mk.finki.ukim.lab_emt.repository.HostRepository;
 import mk.finki.ukim.lab_emt.repository.StayRepository;
 import org.springframework.stereotype.Component;
@@ -15,11 +13,13 @@ public class DataInitializer {
     private final CountryRepository countryRepository;
     private final HostRepository hostRepository;
     private final StayRepository stayRepository;
+    private final GuestRepository guestRepository;
 
-    public DataInitializer(CountryRepository countryRepository, HostRepository hostRepository, StayRepository stayRepository) {
+    public DataInitializer(CountryRepository countryRepository, HostRepository hostRepository, StayRepository stayRepository, GuestRepository guestRepository) {
         this.countryRepository = countryRepository;
         this.hostRepository = hostRepository;
         this.stayRepository = stayRepository;
+        this.guestRepository = guestRepository;
     }
 
     @PostConstruct
@@ -43,7 +43,5 @@ public class DataInitializer {
         stayRepository.save(new Stay("Andrej", Category.MOTEL, hostRepository.findAll().get(4), 2));
         stayRepository.save(new Stay("Popo", Category.HOUSE, hostRepository.findAll().get(1), 1));
         stayRepository.save(new Stay("Magdalena", Category.HOTEL, hostRepository.findAll().get(0), 4));
-
-
     }
 }

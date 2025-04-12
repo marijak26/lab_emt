@@ -69,3 +69,5 @@ public class StayController {
         }
     }
 }
+
+//dop baranje - da dodademe nov entitet guest i da go povrzeme so host taka sto preku hostot kje moze da imame uvid koj go rezerviral smestuvanjeto
