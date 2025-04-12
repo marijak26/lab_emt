@@ -1,12 +1,11 @@
-package mk.finki.ukim.lab_emt.service.impl;
+package mk.finki.ukim.lab_emt.service.domain.impl;
 
-import mk.finki.ukim.lab_emt.model.Stay;
-import mk.finki.ukim.lab_emt.model.dto.StayDto;
+import mk.finki.ukim.lab_emt.model.domain.Stay;
 import mk.finki.ukim.lab_emt.model.exceptions.StayIsAlreadyRentedException;
 import mk.finki.ukim.lab_emt.model.exceptions.StayNotFoundException;
 import mk.finki.ukim.lab_emt.repository.StayRepository;
-import mk.finki.ukim.lab_emt.service.HostService;
-import mk.finki.ukim.lab_emt.service.StayService;
+import mk.finki.ukim.lab_emt.service.domain.HostService;
+import mk.finki.ukim.lab_emt.service.domain.StayService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,12 +37,12 @@ public class StayServiceImpl implements StayService {
     }
 
     @Override
-    public Optional<Stay> save(StayDto stay) {
+    public Optional<Stay> save(Stay stay) {
         if (stay.getHost() != null &&
-                hostService.findById(stay.getHost()).isPresent() &&
+                hostService.findById(stay.getHost().getHostId()).isPresent() &&
                 stay.getCategory() != null) {
             return Optional.of(
-                    stayRepository.save(new Stay(stay.getName(), stay.getCategory(), hostService.findById(stay.getHost()).get(),
+                    stayRepository.save(new Stay(stay.getName(), stay.getCategory(), hostService.findById(stay.getHost().getHostId()).get(),
                             stay.getNumRooms())));
         }
         return Optional.empty();
@@ -51,7 +50,7 @@ public class StayServiceImpl implements StayService {
     }
 
     @Override
-    public Optional<Stay> update(Long stayId, StayDto stay) {
+    public Optional<Stay> update(Long stayId, Stay stay) {
         return stayRepository.findById(stayId)
                 .map(existingStay -> {
                     if (stay.getName() != null) {
@@ -60,8 +59,8 @@ public class StayServiceImpl implements StayService {
                     if (stay.getCategory() != null) {
                         existingStay.setCategory(stay.getCategory());
                     }
-                    if (stay.getHost() != null && hostService.findById(stay.getHost()).isPresent()) {
-                        existingStay.setHost(hostService.findById(stay.getHost()).get());
+                    if (stay.getHost() != null && hostService.findById(stay.getHost().getHostId()).isPresent()) {
+                        existingStay.setHost(hostService.findById(stay.getHost().getHostId()).get());
                     }
                     if (stay.getNumRooms() != null) {
                         existingStay.setNumRooms(stay.getNumRooms());

@@ -1,4 +1,4 @@
-package mk.finki.ukim.lab_emt.model;
+package mk.finki.ukim.lab_emt.model.enumerations;
 
 
 public enum Category {
