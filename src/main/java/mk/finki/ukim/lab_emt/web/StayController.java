@@ -1,8 +1,8 @@
 package mk.finki.ukim.lab_emt.web;
 
-import mk.finki.ukim.lab_emt.model.Stay;
-import mk.finki.ukim.lab_emt.model.dto.StayDto;
-import mk.finki.ukim.lab_emt.service.StayService;
+import mk.finki.ukim.lab_emt.model.dto.CreateStayDto;
+import mk.finki.ukim.lab_emt.model.dto.DisplayStayDto;
+import mk.finki.ukim.lab_emt.service.application.StayApplicationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,47 +11,47 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/stays")
 public class StayController {
-    private final StayService stayService;
+    private final StayApplicationService stayApplicationService;
 
-    public StayController(StayService stayService) {
-        this.stayService = stayService;
+    public StayController(StayApplicationService stayApplicationService) {
+        this.stayApplicationService = stayApplicationService;
     }
 
     @GetMapping
-    public List<Stay> findAll() {
-        return stayService.findAll();
+    public List<DisplayStayDto> findAll() {
+        return stayApplicationService.findAll();
     }
 
     @GetMapping("/free")
-    public List<Stay> findFree() {
-        return stayService.findFree();
+    public List<DisplayStayDto> findFree() {
+        return stayApplicationService.findFree();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Stay> findById(@PathVariable Long id) {
-        return stayService.findById(id)
+    public ResponseEntity<DisplayStayDto> findById(@PathVariable Long id) {
+        return stayApplicationService.findById(id)
                 .map(ResponseEntity::ok).
                 orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Stay> save(@RequestBody StayDto stay) {
-        return stayService.save(stay)
+    public ResponseEntity<DisplayStayDto> save(@RequestBody CreateStayDto createStayDto) {
+        return stayApplicationService.save(createStayDto)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PutMapping("/edit/{id}")
-    public ResponseEntity<Stay> update(@PathVariable Long id, @RequestBody StayDto stay) {
-        return stayService.update(id, stay)
+    public ResponseEntity<DisplayStayDto> update(@PathVariable Long id, @RequestBody CreateStayDto createStayDto) {
+        return stayApplicationService.update(id, createStayDto)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        if (stayService.findById(id).isPresent()) {
-            stayService.deleteById(id);
+        if (stayApplicationService.findById(id).isPresent()) {
+            stayApplicationService.deleteById(id);
             return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.notFound().build();
@@ -59,9 +59,9 @@ public class StayController {
     }
 
     @PatchMapping("/rent/{id}")
-    public ResponseEntity<Stay> rent(@PathVariable Long id) {
-        if(stayService.findById(id).isPresent()) {
-            Stay updatedStay = stayService.markStayAsRented(id);
+    public ResponseEntity<DisplayStayDto> rent(@PathVariable Long id) {
+        if(stayApplicationService.findById(id).isPresent()) {
+            DisplayStayDto updatedStay = stayApplicationService.markStayAsRented(id);
             return ResponseEntity.ok(updatedStay);
         }
         else{
@@ -69,3 +69,5 @@ public class StayController {
         }
     }
 }
+
+//dop baranje - da dodademe nov entitet guest i da go povrzeme so host taka sto preku hostot kje moze da imame uvid koj go rezerviral smestuvanjeto

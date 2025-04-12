@@ -1,8 +1,8 @@
 package mk.finki.ukim.lab_emt.web;
 
-import mk.finki.ukim.lab_emt.model.Country;
-import mk.finki.ukim.lab_emt.model.dto.CountryDto;
-import mk.finki.ukim.lab_emt.service.CountryService;
+import mk.finki.ukim.lab_emt.model.dto.CreateCountryDto;
+import mk.finki.ukim.lab_emt.model.dto.DisplayCountryDto;
+import mk.finki.ukim.lab_emt.service.application.CountryApplicationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,34 +11,34 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/countries")
 public class CountryController {
-    private final CountryService countryService;
+    private final CountryApplicationService countryApplicationService;
 
-    public CountryController(CountryService countryService) {
-        this.countryService = countryService;
+    public CountryController(CountryApplicationService countryApplicationService) {
+        this.countryApplicationService = countryApplicationService;
     }
 
     @GetMapping
-    public List<Country> findAll() {
-        return countryService.findAll();
+    public List<DisplayCountryDto> findAll() {
+        return countryApplicationService.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Country> findById(@PathVariable Long id) {
-        return countryService.findById(id)
-                .map(country -> ResponseEntity.ok().body(country))
+    public ResponseEntity<DisplayCountryDto> findById(@PathVariable Long id) {
+        return countryApplicationService.findById(id)
+                .map(displayCountryDto -> ResponseEntity.ok().body(displayCountryDto))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Country> save(@RequestBody CountryDto country) {
-        return countryService.save(country)
-                .map(c -> ResponseEntity.ok().body(c))
+    public ResponseEntity<DisplayCountryDto> save(@RequestBody CreateCountryDto createCountryDto) {
+        return countryApplicationService.save(createCountryDto)
+                .map(displayCountryDto -> ResponseEntity.ok().body(displayCountryDto))
                 .orElseGet(() -> ResponseEntity.badRequest().build());
     }
 
     @PutMapping("/edit/{id}")
-    public ResponseEntity<Country> update(@PathVariable Long id, @RequestBody CountryDto country) {
-        return countryService.update(id, country)
+    public ResponseEntity<DisplayCountryDto> update(@PathVariable Long id, @RequestBody CreateCountryDto createCountryDto) {
+        return countryApplicationService.update(id, createCountryDto)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }

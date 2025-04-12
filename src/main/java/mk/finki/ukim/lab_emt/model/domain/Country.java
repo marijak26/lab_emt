@@ -1,4 +1,4 @@
-package mk.finki.ukim.lab_emt.model;
+package mk.finki.ukim.lab_emt.model.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -11,19 +11,16 @@ import lombok.Setter;
 @NoArgsConstructor
 @Setter
 @Getter
-public class Host {
+public class Country {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
-    private String surname;
+    private String continent;
 
-    @ManyToOne
-    private Country country;
-
-    public Host(String name, String surname, Country country) {
+    public Country(String name, String continent) {
         this.name = name;
-        this.surname = surname;
-        this.country = country;
+        this.continent = continent;
     }
 }

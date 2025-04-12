@@ -1,13 +1,11 @@
 package mk.finki.ukim.lab_emt.config;
 
 import jakarta.annotation.PostConstruct;
-import mk.finki.ukim.lab_emt.model.Category;
-import mk.finki.ukim.lab_emt.model.Country;
-import mk.finki.ukim.lab_emt.model.Host;
-import mk.finki.ukim.lab_emt.model.Stay;
-import mk.finki.ukim.lab_emt.repository.CountryRepository;
-import mk.finki.ukim.lab_emt.repository.HostRepository;
-import mk.finki.ukim.lab_emt.repository.StayRepository;
+import mk.finki.ukim.lab_emt.model.domain.*;
+import mk.finki.ukim.lab_emt.model.enumerations.Category;
+import mk.finki.ukim.lab_emt.model.enumerations.Role;
+import mk.finki.ukim.lab_emt.repository.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -15,11 +13,17 @@ public class DataInitializer {
     private final CountryRepository countryRepository;
     private final HostRepository hostRepository;
     private final StayRepository stayRepository;
+    private final GuestRepository guestRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public DataInitializer(CountryRepository countryRepository, HostRepository hostRepository, StayRepository stayRepository) {
+    public DataInitializer(CountryRepository countryRepository, HostRepository hostRepository, StayRepository stayRepository, GuestRepository guestRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.countryRepository = countryRepository;
         this.hostRepository = hostRepository;
         this.stayRepository = stayRepository;
+        this.guestRepository = guestRepository;
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostConstruct
@@ -36,14 +40,35 @@ public class DataInitializer {
         hostRepository.save(new Host("Marija", "Kostadinovikj", countryRepository.findAll().get(3)));
         hostRepository.save(new Host("Julia", "Roberts", countryRepository.findAll().get(4)));
 
-        stayRepository.save(new Stay("Marija", Category.ROOM, hostRepository.findAll().get(0), 1));
-        stayRepository.save(new Stay("Petar", Category.APARTMENT, hostRepository.findAll().get(1), 1));
-        stayRepository.save(new Stay("Julija", Category.FLAT, hostRepository.findAll().get(2), 2));
-        stayRepository.save(new Stay("Ana", Category.HOTEL, hostRepository.findAll().get(3), 3));
-        stayRepository.save(new Stay("Andrej", Category.MOTEL, hostRepository.findAll().get(4), 2));
-        stayRepository.save(new Stay("Popo", Category.HOUSE, hostRepository.findAll().get(1), 1));
-        stayRepository.save(new Stay("Magdalena", Category.HOTEL, hostRepository.findAll().get(0), 4));
+        guestRepository.save(new Guest("Ana", "Todorova", countryRepository.findAll().get(1)));
+        guestRepository.save(new Guest("Marko", "Markovski", countryRepository.findAll().get(4)));
+        guestRepository.save(new Guest("Petar", "Petrovski", countryRepository.findAll().get(3)));
+        guestRepository.save(new Guest("Kristijan", "Kristijanoski", countryRepository.findAll().get(2)));
+        guestRepository.save(new Guest("Stefan", "Stefanovski", countryRepository.findAll().get(0)));
 
+        stayRepository.save(new Stay("Smestuvanje 1", Category.ROOM, hostRepository.findAll().get(0), 1));
+        stayRepository.save(new Stay("Smestuvanje 2", Category.APARTMENT, hostRepository.findAll().get(1), 1));
+        stayRepository.save(new Stay("Smestuvanje 3", Category.FLAT, hostRepository.findAll().get(2), 2));
+        stayRepository.save(new Stay("Smestuvanje 4", Category.HOTEL, hostRepository.findAll().get(3), 3));
+        stayRepository.save(new Stay("Smestuvanje 5", Category.MOTEL, hostRepository.findAll().get(4), 2));
+        stayRepository.save(new Stay("Smestuvanje 6", Category.HOUSE, hostRepository.findAll().get(1), 1));
+        stayRepository.save(new Stay("Smestuvanje 7", Category.HOTEL, hostRepository.findAll().get(0), 4));
+
+        userRepository.save(new User(
+                "mk",
+                passwordEncoder.encode("mk"),
+                hostRepository.findAll().get(3).getName(),
+                hostRepository.findAll().get(3).getSurname(),
+                Role.ROLE_HOST
+        ));
+
+        userRepository.save(new User(
+                "user",
+                passwordEncoder.encode("user"),
+                "user",
+                "user",
+                Role.ROLE_USER
+        ));
 
     }
 }

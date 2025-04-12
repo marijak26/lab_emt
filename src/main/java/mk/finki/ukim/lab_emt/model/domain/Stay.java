@@ -1,10 +1,11 @@
-package mk.finki.ukim.lab_emt.model;
+package mk.finki.ukim.lab_emt.model.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import mk.finki.ukim.lab_emt.model.enumerations.Category;
 
 @Data
 @Entity
@@ -33,4 +34,5 @@ public class Stay {
         this.host = host;
         this.numRooms = numRooms;
     }
+
 }

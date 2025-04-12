@@ -1,6 +1,6 @@
 package mk.finki.ukim.lab_emt.repository;
 
-import mk.finki.ukim.lab_emt.model.Stay;
+import mk.finki.ukim.lab_emt.model.domain.Stay;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
