@@ -1,8 +1,8 @@
 package mk.finki.ukim.lab_emt.web;
 
-import mk.finki.ukim.lab_emt.model.dto.CreateGuestDto;
-import mk.finki.ukim.lab_emt.model.dto.DisplayGuestDto;
-import mk.finki.ukim.lab_emt.service.application.GuestApplicationService;
+import mk.finki.ukim.lab_emt.model.Guest;
+import mk.finki.ukim.lab_emt.model.dto.GuestDto;
+import mk.finki.ukim.lab_emt.service.GuestService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,35 +11,35 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/guests")
 public class GuestController {
-    private final GuestApplicationService guestApplicationService;
+    private final GuestService guestService;
 
-    public GuestController(GuestApplicationService guestApplicationService) {
-        this.guestApplicationService = guestApplicationService;
+    public GuestController(GuestService guestService) {
+        this.guestService = guestService;
     }
 
     @GetMapping
-    public List<DisplayGuestDto> findAll() {
-        return guestApplicationService.findAll();
+    public List<Guest> findAll() {
+        return guestService.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DisplayGuestDto> findById(@PathVariable Long id) {
-        return guestApplicationService.findById(id)
-                .map(displayGuestDto -> ResponseEntity.ok().body(displayGuestDto))
+    public ResponseEntity<Guest> findById(@PathVariable Long id) {
+        return guestService.findById(id)
+                .map(guest -> ResponseEntity.ok().body(guest))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/add")
-    public ResponseEntity<DisplayGuestDto> save(@RequestBody CreateGuestDto createGuestDto) {
-        return guestApplicationService.save(createGuestDto)
-                .map(displayGuestDto -> ResponseEntity.ok().body(displayGuestDto))
+    public ResponseEntity<Guest> save(@RequestBody GuestDto guest) {
+        return guestService.save(guest)
+                .map(c -> ResponseEntity.ok().body(c))
                 .orElseGet(() -> ResponseEntity.badRequest().build());
     }
 
     @PutMapping("/edit/{id}")
-    public ResponseEntity<DisplayGuestDto> update(@PathVariable Long id, @RequestBody CreateGuestDto createGuestDto) {
-        return guestApplicationService.update(id, createGuestDto)
-                .map(displayGuestDto -> ResponseEntity.ok().body(displayGuestDto))
+    public ResponseEntity<Guest> update(@PathVariable Long id, @RequestBody GuestDto guest) {
+        return guestService.update(id, guest)
+                .map(c -> ResponseEntity.ok().body(c))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

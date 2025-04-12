@@ -1,10 +1,10 @@
 package mk.finki.ukim.lab_emt.web;
 
-import mk.finki.ukim.lab_emt.model.dto.CreateGuestDto;
-import mk.finki.ukim.lab_emt.model.dto.CreateHostDto;
-import mk.finki.ukim.lab_emt.model.dto.DisplayGuestDto;
-import mk.finki.ukim.lab_emt.model.dto.DisplayHostDto;
-import mk.finki.ukim.lab_emt.service.application.HostApplicationService;
+import mk.finki.ukim.lab_emt.model.Guest;
+import mk.finki.ukim.lab_emt.model.Host;
+import mk.finki.ukim.lab_emt.model.dto.GuestDto;
+import mk.finki.ukim.lab_emt.model.dto.HostDto;
+import mk.finki.ukim.lab_emt.service.HostService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,47 +13,47 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/hosts")
 public class HostController {
-    private final HostApplicationService hostApplicationService;
+    private final HostService hostService;
 
-    public HostController(HostApplicationService hostApplicationService) {
-        this.hostApplicationService = hostApplicationService;
+    public HostController(HostService hostService) {
+        this.hostService = hostService;
     }
 
     @GetMapping
-    public List<DisplayHostDto> findAll() {
-        return hostApplicationService.findAll();
+    public List<Host> findAll() {
+        return hostService.findAll();
     }
 
     @GetMapping("/getGuests")
-    public List<DisplayGuestDto> findGuestsByHostId(Long hostId) {
-        return hostApplicationService.findGuestsByHostId(hostId);
+    public List<Guest> findGuestsByHostId(Long hostId) {
+        return hostService.findGuestsByHostId(hostId);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DisplayHostDto> findById(@PathVariable Long id) {
-        return hostApplicationService.findById(id)
-                .map(displayHostDto -> ResponseEntity.ok().body(displayHostDto))
+    public ResponseEntity<Host> findById(@PathVariable Long id) {
+        return hostService.findById(id)
+                .map(host -> ResponseEntity.ok().body(host))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/add")
-    public ResponseEntity<DisplayHostDto> save(@RequestBody CreateHostDto createHostDto) {
-        return hostApplicationService.save(createHostDto)
-                .map(displayHostDto -> ResponseEntity.ok().body(displayHostDto))
+    public ResponseEntity<Host> save(@RequestBody HostDto host) {
+        return hostService.save(host)
+                .map(c -> ResponseEntity.ok().body(c))
                 .orElseGet(() -> ResponseEntity.badRequest().build());
     }
 
     @PostMapping("/saveGuest/{id}")
-    public ResponseEntity<DisplayHostDto> saveGuest(@PathVariable Long id, @RequestBody CreateGuestDto createGuestDto) {
-        return hostApplicationService.saveGuest(id, createGuestDto)
-                .map(displayHostDto -> ResponseEntity.ok().body(displayHostDto))
+    public ResponseEntity<Host> saveGuest(@PathVariable Long id, @RequestBody GuestDto guest) {
+        return hostService.saveGuest(id, guest)
+                .map(host -> ResponseEntity.ok().body(host))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PutMapping("/edit/{id}")
-    public ResponseEntity<DisplayHostDto> update(@PathVariable Long id, @RequestBody CreateHostDto createHostDto) {
-        return hostApplicationService.update(id, createHostDto)
-                .map(displayHostDto -> ResponseEntity.ok().body(displayHostDto))
+    public ResponseEntity<Host> update(@PathVariable Long id, @RequestBody HostDto host) {
+        return hostService.update(id, host)
+                .map(c -> ResponseEntity.ok().body(c))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 

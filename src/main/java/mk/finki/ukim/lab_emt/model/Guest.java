@@ -11,29 +11,26 @@ import java.util.List;
 @NoArgsConstructor
 @Setter
 @Getter
-public class Host {
+public class Guest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long hostId;
+    private Long guestId;
+
     private String name;
     private String surname;
 
     @ManyToOne
     private Country country;
 
-    @ManyToMany
-    @JoinTable(
-            name = "hosts_guests",
-            joinColumns = @JoinColumn(name = "hostId"),
-            inverseJoinColumns = @JoinColumn(name = "guestId"))
+    @ManyToMany(mappedBy = "guests")
     @ToString.Exclude
-    private List<Guest> guests;
+    private List<Host> hosts;
 
-    public Host(String name, String surname, Country country) {
+
+    public Guest(String name, String surname, Country country) {
         this.name = name;
         this.surname = surname;
         this.country = country;
-        this.guests = new ArrayList<>();
+        this.hosts = new ArrayList<>();
     }
-
 }
