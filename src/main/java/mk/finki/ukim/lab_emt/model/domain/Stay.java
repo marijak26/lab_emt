@@ -12,6 +12,7 @@ import mk.finki.ukim.lab_emt.model.enumerations.Category;
 @NoArgsConstructor
 @Setter
 @Getter
+@Table(name = "stays")
 public class Stay {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

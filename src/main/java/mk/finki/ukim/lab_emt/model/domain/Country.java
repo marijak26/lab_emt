@@ -1,39 +1,27 @@
-package mk.finki.ukim.lab_emt.model;
+package mk.finki.ukim.lab_emt.model.domain;
 
 import jakarta.persistence.*;
-import lombok.*;
-
-import java.util.ArrayList;
-import java.util.List;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Data
 @Entity
 @NoArgsConstructor
 @Setter
 @Getter
-public class Host {
+@Table(name = "countries")
+public class Country {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long hostId;
+    private Long id;
+
     private String name;
-    private String surname;
+    private String continent;
 
-    @ManyToOne
-    private Country country;
-
-    @ManyToMany
-    @JoinTable(
-            name = "hosts_guests",
-            joinColumns = @JoinColumn(name = "hostId"),
-            inverseJoinColumns = @JoinColumn(name = "guestId"))
-    @ToString.Exclude
-    private List<Guest> guests;
-
-    public Host(String name, String surname, Country country) {
+    public Country(String name, String continent) {
         this.name = name;
-        this.surname = surname;
-        this.country = country;
-        this.guests = new ArrayList<>();
+        this.continent = continent;
     }
-
 }
