@@ -12,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @Setter
 @Getter
+@Table(name = "hosts")
 public class Host {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
