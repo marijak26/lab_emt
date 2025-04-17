@@ -12,8 +12,8 @@ import mk.finki.ukim.lab_emt.model.enumerations.Category;
 @NoArgsConstructor
 @Setter
 @Getter
-@Table(name = "stays")
-public class Stay {
+@Table(name = "accommodations")
+public class Accommodation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,7 +29,7 @@ public class Stay {
     private Integer numRooms;
     private boolean isRented;
 
-    public Stay(String name, Category category, Host host, Integer numRooms) {
+    public Accommodation(String name, Category category, Host host, Integer numRooms) {
         this.name = name;
         this.category = category;
         this.host = host;

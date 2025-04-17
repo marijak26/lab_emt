@@ -50,7 +50,7 @@ public class WebSecurityConfig {
                         "/api/countries",
                         "/api/guests",
                         "/api/hosts",
-                        "/api/stays/",
+                        "/api/accommodations/",
                         "/api/user/login",
                         "/api/user/register",
                         "/h2/**"

@@ -1,16 +1,16 @@
 package mk.finki.ukim.lab_emt.service.domain.impl;
 
 import mk.finki.ukim.lab_emt.model.domain.Reservation;
-import mk.finki.ukim.lab_emt.model.domain.Stay;
+import mk.finki.ukim.lab_emt.model.domain.Accommodation;
 import mk.finki.ukim.lab_emt.model.domain.User;
 import mk.finki.ukim.lab_emt.model.enumerations.ReservationStatus;
 import mk.finki.ukim.lab_emt.model.exceptions.ReservationNotFoundException;
-import mk.finki.ukim.lab_emt.model.exceptions.StayAlreadyInReservationException;
-import mk.finki.ukim.lab_emt.model.exceptions.StayIsAlreadyRentedException;
-import mk.finki.ukim.lab_emt.model.exceptions.StayNotFoundException;
+import mk.finki.ukim.lab_emt.model.exceptions.AccommodationAlreadyInReservationException;
+import mk.finki.ukim.lab_emt.model.exceptions.AccommodationIsAlreadyRentedException;
+import mk.finki.ukim.lab_emt.model.exceptions.AccommodationNotFoundException;
 import mk.finki.ukim.lab_emt.repository.ReservationRepository;
 import mk.finki.ukim.lab_emt.service.domain.ReservationService;
-import mk.finki.ukim.lab_emt.service.domain.StayService;
+import mk.finki.ukim.lab_emt.service.domain.AccommodationService;
 import mk.finki.ukim.lab_emt.service.domain.UserService;
 import org.springframework.stereotype.Service;
 
@@ -22,13 +22,13 @@ public class ReservationServiceImpl implements ReservationService {
 
     private final ReservationRepository reservationRepository;
     private final UserService userService;
-    private final StayService stayService;
+    private final AccommodationService accommodationService;
 
 
-    public ReservationServiceImpl(ReservationRepository reservationRepository, UserService userService, StayService stayService) {
+    public ReservationServiceImpl(ReservationRepository reservationRepository, UserService userService, AccommodationService accommodationService) {
         this.reservationRepository = reservationRepository;
         this.userService = userService;
-        this.stayService = stayService;
+        this.accommodationService = accommodationService;
     }
 
     @Override
@@ -37,10 +37,10 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<Stay> listAllStaysInReservation(Long reservationId) {
+    public List<Accommodation> listAllAccommodationsInReservation(Long reservationId) {
         if(reservationRepository.findById(reservationId).isEmpty())
             throw new ReservationNotFoundException(reservationId);
-        return reservationRepository.findById(reservationId).get().getStays();
+        return reservationRepository.findById(reservationId).get().getAccommodations();
     }
 
     @Override
@@ -52,17 +52,17 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public Optional<Reservation> addStayToReservation(String username, Long stayId) {
+    public Optional<Reservation> addAccommodationToReservation(String username, Long accommodationId) {
         if(getActiveReservation(username).isPresent()){
             Reservation reservation = getActiveReservation(username).get();
 
-            Stay stay = stayService.findById(stayId)
-                    .orElseThrow(() -> new StayNotFoundException(stayId));
-            if(!reservation.getStays().stream().filter(s -> s.getId().equals(stayId)).toList().isEmpty())
-                throw new StayAlreadyInReservationException(stayId, username);
-            if(stay.isRented())
-                throw new StayIsAlreadyRentedException(stayId);
-            reservation.getStays().add(stay);
+            Accommodation accommodation = accommodationService.findById(accommodationId)
+                    .orElseThrow(() -> new AccommodationNotFoundException(accommodationId));
+            if(!reservation.getAccommodations().stream().filter(a -> a.getId().equals(accommodationId)).toList().isEmpty())
+                throw new AccommodationAlreadyInReservationException(accommodationId, username);
+            if(accommodation.isRented())
+                throw new AccommodationIsAlreadyRentedException(accommodationId);
+            reservation.getAccommodations().add(accommodation);
             return Optional.of(reservationRepository.save(reservation));
         }
         return Optional.empty();
@@ -76,12 +76,12 @@ public class ReservationServiceImpl implements ReservationService {
                 .orElseThrow(() -> new ReservationNotFoundException(
                         reservationRepository.findByUserAndStatus(user,ReservationStatus.CREATED).get().getId()));
 
-        if(reservation.getStays().isEmpty()){
+        if(reservation.getAccommodations().isEmpty()){
             throw new IllegalStateException("You cannot confirm an empty reservation");
         }
-        reservation.getStays().forEach(stay -> {
-            stay.setRented(true);
-            stayService.save(stay);
+        reservation.getAccommodations().forEach(accommodation -> {
+            accommodation.setRented(true);
+            accommodationService.save(accommodation);
         });
         reservation.setStatus(ReservationStatus.CONFIRMED);
         return Optional.of(reservationRepository.save(reservation));
@@ -95,12 +95,12 @@ public class ReservationServiceImpl implements ReservationService {
                 .orElseThrow(() -> new ReservationNotFoundException(
                         reservationRepository.findByUserAndStatus(user,ReservationStatus.CREATED).get().getId()));
 
-        if(reservation.getStays().isEmpty()){
+        if(reservation.getAccommodations().isEmpty()){
             throw new IllegalStateException("You cannot cancel an empty reservation");
         }
-        reservation.getStays().forEach(stay -> {
-            stay.setRented(false);
-            stayService.save(stay);
+        reservation.getAccommodations().forEach(accommodation -> {
+            accommodation.setRented(false);
+            accommodationService.save(accommodation);
         });
         reservation.setStatus(ReservationStatus.CANCELED);
         return Optional.of(reservationRepository.save(reservation));

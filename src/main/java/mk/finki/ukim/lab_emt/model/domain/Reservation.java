@@ -29,7 +29,7 @@ public class Reservation {
     private User user;
 
     @ManyToMany
-    private List<Stay> stays;
+    private List<Accommodation> accommodations;
 
     @Enumerated(EnumType.STRING)
     private ReservationStatus status;
@@ -37,7 +37,7 @@ public class Reservation {
     public Reservation(User user){
         this.dateCreated = LocalDateTime.now();
         this.user = user;
-        this.stays = new ArrayList<>();
+        this.accommodations = new ArrayList<>();
         this.status = ReservationStatus.CREATED;
     }
 

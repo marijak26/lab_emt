@@ -12,15 +12,15 @@ import org.springframework.stereotype.Component;
 public class DataInitializer {
     private final CountryRepository countryRepository;
     private final HostRepository hostRepository;
-    private final StayRepository stayRepository;
+    private final AccommodationRepository accommodationRepository;
     private final GuestRepository guestRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public DataInitializer(CountryRepository countryRepository, HostRepository hostRepository, StayRepository stayRepository, GuestRepository guestRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public DataInitializer(CountryRepository countryRepository, HostRepository hostRepository, AccommodationRepository accommodationRepository, GuestRepository guestRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.countryRepository = countryRepository;
         this.hostRepository = hostRepository;
-        this.stayRepository = stayRepository;
+        this.accommodationRepository = accommodationRepository;
         this.guestRepository = guestRepository;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
@@ -46,13 +46,16 @@ public class DataInitializer {
         guestRepository.save(new Guest("Kristijan", "Kristijanoski", countryRepository.findAll().get(2)));
         guestRepository.save(new Guest("Stefan", "Stefanovski", countryRepository.findAll().get(0)));
 
-        stayRepository.save(new Stay("Smestuvanje 1", Category.ROOM, hostRepository.findAll().get(0), 1));
-        stayRepository.save(new Stay("Smestuvanje 2", Category.APARTMENT, hostRepository.findAll().get(1), 1));
-        stayRepository.save(new Stay("Smestuvanje 3", Category.FLAT, hostRepository.findAll().get(2), 2));
-        stayRepository.save(new Stay("Smestuvanje 4", Category.HOTEL, hostRepository.findAll().get(3), 3));
-        stayRepository.save(new Stay("Smestuvanje 5", Category.MOTEL, hostRepository.findAll().get(4), 2));
-        stayRepository.save(new Stay("Smestuvanje 6", Category.HOUSE, hostRepository.findAll().get(1), 1));
-        stayRepository.save(new Stay("Smestuvanje 7", Category.HOTEL, hostRepository.findAll().get(0), 4));
+        accommodationRepository.save(new Accommodation("Smestuvanje 1", Category.ROOM, hostRepository.findAll().get(0), 1));
+        accommodationRepository.save(new Accommodation("Smestuvanje 2", Category.APARTMENT, hostRepository.findAll().get(1), 1));
+        accommodationRepository.save(new Accommodation("Smestuvanje 3", Category.FLAT, hostRepository.findAll().get(2), 2));
+        accommodationRepository.save(new Accommodation("Smestuvanje 4", Category.HOTEL, hostRepository.findAll().get(3), 3));
+        accommodationRepository.save(new Accommodation("Smestuvanje 5", Category.MOTEL, hostRepository.findAll().get(4), 2));
+        accommodationRepository.save(new Accommodation("Smestuvanje 6", Category.HOUSE, hostRepository.findAll().get(1), 1));
+        accommodationRepository.save(new Accommodation("Smestuvanje 7", Category.HOTEL, hostRepository.findAll().get(0), 4));
+        accommodationRepository.save(new Accommodation("Smestuvanje 8", Category.APARTMENT, hostRepository.findAll().get(2), 3));
+        accommodationRepository.save(new Accommodation("Smestuvanje 9", Category.MOTEL, hostRepository.findAll().get(1), 1));
+        accommodationRepository.save(new Accommodation("Smestuvanje 10", Category.APARTMENT, hostRepository.findAll().get(3), 4));
 
         userRepository.save(new User(
                 "mk",
