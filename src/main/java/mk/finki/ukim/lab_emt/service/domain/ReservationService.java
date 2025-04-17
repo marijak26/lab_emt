@@ -1,7 +1,7 @@
 package mk.finki.ukim.lab_emt.service.domain;
 
+import mk.finki.ukim.lab_emt.model.domain.Accommodation;
 import mk.finki.ukim.lab_emt.model.domain.Reservation;
-import mk.finki.ukim.lab_emt.model.domain.Stay;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,11 +10,11 @@ public interface ReservationService {
 
     Optional<Reservation> findById(Long id);
 
-    List<Stay> listAllStaysInReservation(Long reservationId);
+    List<Accommodation> listAllAccommodationsInReservation(Long reservationId);
 
     Optional<Reservation> getActiveReservation(String username);
 
-    Optional<Reservation> addStayToReservation(String username, Long stayId);
+    Optional<Reservation> addAccommodationToReservation(String username, Long accommodationId);
 
     Optional<Reservation> confirmReservation(String username);
 

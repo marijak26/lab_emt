@@ -10,7 +10,7 @@ public record ReservationDto(
         Long id,
         LocalDateTime dateCreated,
         DisplayUserDto user,
-        List<DisplayStayDto> stays,
+        List<DisplayAccommodationDto> accommodations,
         ReservationStatus status
 ) {
     public static ReservationDto from(Reservation reservation) {
@@ -18,7 +18,7 @@ public record ReservationDto(
                 reservation.getId(),
                 reservation.getDateCreated(),
                 DisplayUserDto.from(reservation.getUser()),
-                DisplayStayDto.from(reservation.getStays()),
+                DisplayAccommodationDto.from(reservation.getAccommodations()),
                 reservation.getStatus()
         );
     }

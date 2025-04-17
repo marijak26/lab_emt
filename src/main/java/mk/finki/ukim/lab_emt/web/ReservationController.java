@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 
 import mk.finki.ukim.lab_emt.model.domain.User;
-import mk.finki.ukim.lab_emt.model.dto.DisplayStayDto;
+import mk.finki.ukim.lab_emt.model.dto.DisplayAccommodationDto;
 import mk.finki.ukim.lab_emt.model.dto.ReservationDto;
 import mk.finki.ukim.lab_emt.service.application.ReservationApplicationService;
 import org.springframework.http.ResponseEntity;
@@ -28,12 +28,12 @@ public class ReservationController {
     }
 
     @Operation(
-            summary = "Get all stays in reservation",
-            description = "Retrieves a list of all stays in a reservation by its ID"
+            summary = "Get all accommodations in reservation",
+            description = "Retrieves a list of all accommodations in a reservation by its ID"
     )
     @GetMapping("/list-all-for-reservation/{id}")
-    public List<DisplayStayDto> listAllStaysInReservation(@PathVariable Long id) {
-        return reservationApplicationService.listAllStaysInReservation(id);
+    public List<DisplayAccommodationDto> listAllAccommodationsInReservation(@PathVariable Long id) {
+        return reservationApplicationService.listAllAccommodationsInReservation(id);
     }
 
 
@@ -56,27 +56,27 @@ public class ReservationController {
     }
 
     @Operation(
-            summary = "Add stay to reservation",
-            description = "Adds a stay to the reservation for the logged-in user"
+            summary = "Add accommodation to reservation",
+            description = "Adds an accommodation to the reservation for the logged-in user"
     )
     @ApiResponses(
             value = {@ApiResponse(
-                    responseCode = "200", description = "Stay added to reservation successfully"
+                    responseCode = "200", description = "Accommodation added to reservation successfully"
             ), @ApiResponse(
                     responseCode = "400",
                     description = "Invalid request"
             ), @ApiResponse(
                     responseCode = "404",
-                    description = "Stay not found")}
+                    description = "Accommodation not found")}
     )
-    @PostMapping("/add-stay/{id}")
-    public ResponseEntity<ReservationDto> addStayToReservation(
+    @PostMapping("/add-accommodation/{id}")
+    public ResponseEntity<ReservationDto> addAccommodationToReservation(
             @PathVariable Long id,
             Authentication authentication
     ) {
         try {
             User user = (User) authentication.getPrincipal();
-            return reservationApplicationService.addStayToReservation(user.getUsername(), id)
+            return reservationApplicationService.addAccommodationToReservation(user.getUsername(), id)
                     .map(ResponseEntity::ok)
                     .orElse(ResponseEntity.notFound().build());
         } catch (RuntimeException exception) {

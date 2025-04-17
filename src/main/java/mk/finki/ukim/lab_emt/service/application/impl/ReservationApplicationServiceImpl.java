@@ -1,6 +1,6 @@
 package mk.finki.ukim.lab_emt.service.application.impl;
 
-import mk.finki.ukim.lab_emt.model.dto.DisplayStayDto;
+import mk.finki.ukim.lab_emt.model.dto.DisplayAccommodationDto;
 import mk.finki.ukim.lab_emt.model.dto.ReservationDto;
 import mk.finki.ukim.lab_emt.service.application.ReservationApplicationService;
 import mk.finki.ukim.lab_emt.service.domain.ReservationService;
@@ -23,8 +23,8 @@ public class ReservationApplicationServiceImpl implements ReservationApplication
     }
 
     @Override
-    public List<DisplayStayDto> listAllStaysInReservation(Long reservationId) {
-        return DisplayStayDto.from(reservationService.listAllStaysInReservation(reservationId));
+    public List<DisplayAccommodationDto> listAllAccommodationsInReservation(Long reservationId) {
+        return DisplayAccommodationDto.from(reservationService.listAllAccommodationsInReservation(reservationId));
     }
 
     @Override
@@ -33,8 +33,8 @@ public class ReservationApplicationServiceImpl implements ReservationApplication
     }
 
     @Override
-    public Optional<ReservationDto> addStayToReservation(String username, Long stayId) {
-        return reservationService.addStayToReservation(username, stayId).map(ReservationDto::from);
+    public Optional<ReservationDto> addAccommodationToReservation(String username, Long accommodationId) {
+        return reservationService.addAccommodationToReservation(username, accommodationId).map(ReservationDto::from);
     }
 
     @Override
