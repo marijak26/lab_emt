@@ -1,10 +1,11 @@
 package mk.finki.ukim.lab_emt.service.application.impl;
 
-import mk.finki.ukim.lab_emt.model.dto.CreateGuestDto;
-import mk.finki.ukim.lab_emt.model.dto.CreateHostDto;
-import mk.finki.ukim.lab_emt.model.dto.DisplayGuestDto;
-import mk.finki.ukim.lab_emt.model.dto.DisplayHostDto;
+import mk.finki.ukim.lab_emt.dto.CreateGuestDto;
+import mk.finki.ukim.lab_emt.dto.CreateHostDto;
+import mk.finki.ukim.lab_emt.dto.DisplayGuestDto;
+import mk.finki.ukim.lab_emt.dto.DisplayHostDto;
 import mk.finki.ukim.lab_emt.model.domain.Country;
+import mk.finki.ukim.lab_emt.model.projections.HostProjection;
 import mk.finki.ukim.lab_emt.service.application.GuestApplicationService;
 import mk.finki.ukim.lab_emt.service.application.HostApplicationService;
 import mk.finki.ukim.lab_emt.service.domain.CountryService;
@@ -59,6 +60,16 @@ public class HostApplicationServiceImpl implements HostApplicationService {
                 )
                 .map(DisplayHostDto::from);
 
+    }
+
+    @Override
+    public void deleteById(Long hostId) {
+        hostService.deleteById(hostId);
+    }
+
+    @Override
+    public List<HostProjection> getHostNamesAndSurnames() {
+        return hostService.getNames();
     }
 
     @Override

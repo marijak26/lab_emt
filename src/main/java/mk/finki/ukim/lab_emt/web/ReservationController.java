@@ -7,8 +7,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 
 import mk.finki.ukim.lab_emt.model.domain.User;
-import mk.finki.ukim.lab_emt.model.dto.DisplayAccommodationDto;
-import mk.finki.ukim.lab_emt.model.dto.ReservationDto;
+import mk.finki.ukim.lab_emt.dto.DisplayAccommodationDto;
+import mk.finki.ukim.lab_emt.dto.ReservationDto;
 import mk.finki.ukim.lab_emt.service.application.ReservationApplicationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
