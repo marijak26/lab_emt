@@ -1,8 +1,8 @@
 package mk.finki.ukim.lab_emt.service.application;
 
 
-import mk.finki.ukim.lab_emt.model.dto.CreateCountryDto;
-import mk.finki.ukim.lab_emt.model.dto.DisplayCountryDto;
+import mk.finki.ukim.lab_emt.dto.CreateCountryDto;
+import mk.finki.ukim.lab_emt.dto.DisplayCountryDto;
 import java.util.List;
 import java.util.Optional;
 

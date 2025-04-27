@@ -1,7 +1,7 @@
 package mk.finki.ukim.lab_emt.service.application;
 
-import mk.finki.ukim.lab_emt.model.dto.CreateGuestDto;
-import mk.finki.ukim.lab_emt.model.dto.DisplayGuestDto;
+import mk.finki.ukim.lab_emt.dto.CreateGuestDto;
+import mk.finki.ukim.lab_emt.dto.DisplayGuestDto;
 
 import java.util.List;
 import java.util.Optional;

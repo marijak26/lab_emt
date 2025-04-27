@@ -1,10 +1,11 @@
 package mk.finki.ukim.lab_emt.service.domain.impl;
 
 import mk.finki.ukim.lab_emt.model.domain.Accommodation;
-import mk.finki.ukim.lab_emt.model.domain.Statistics;
+import mk.finki.ukim.lab_emt.dto.StatisticsDto;
 import mk.finki.ukim.lab_emt.model.exceptions.AccommodationIsAlreadyRentedException;
 import mk.finki.ukim.lab_emt.model.exceptions.AccommodationNotFoundException;
 import mk.finki.ukim.lab_emt.repository.AccommodationRepository;
+import mk.finki.ukim.lab_emt.repository.AccommodationsByHostViewRepository;
 import mk.finki.ukim.lab_emt.service.domain.HostService;
 import mk.finki.ukim.lab_emt.service.domain.AccommodationService;
 import org.springframework.stereotype.Service;
@@ -17,9 +18,12 @@ import java.util.stream.Collectors;
 public class AccommodationServiceImpl implements AccommodationService {
     private final AccommodationRepository accommodationRepository;
     private final HostService hostService;
-    public AccommodationServiceImpl(AccommodationRepository accommodationRepository, HostService hostService) {
+    private final AccommodationsByHostViewRepository accommodationsByHostViewRepository;
+
+    public AccommodationServiceImpl(AccommodationRepository accommodationRepository, HostService hostService, AccommodationsByHostViewRepository accommodationsByHostViewRepository) {
         this.accommodationRepository = accommodationRepository;
         this.hostService = hostService;
+        this.accommodationsByHostViewRepository = accommodationsByHostViewRepository;
     }
 
     @Override
@@ -39,16 +43,17 @@ public class AccommodationServiceImpl implements AccommodationService {
 
     @Override
     public Optional<Accommodation> save(Accommodation accommodation) {
+        Optional<Accommodation> savedAccommodation = Optional.empty();
         if (accommodation.getHost() != null &&
                 hostService.findById(accommodation.getHost().getHostId()).isPresent() &&
                 accommodation.getCategory() != null) {
-            return Optional.of(
+            savedAccommodation = Optional.of(
                     accommodationRepository.save(new Accommodation(accommodation.getName(),
                             accommodation.getCategory(),
                             hostService.findById(accommodation.getHost().getHostId()).get(),
                             accommodation.getNumRooms())));
         }
-        return Optional.empty();
+        return savedAccommodation;
 
     }
 
@@ -92,13 +97,17 @@ public class AccommodationServiceImpl implements AccommodationService {
     }
 
     @Override
-    public List<Statistics> countAccommodationsByCategory() {
+    public List<StatisticsDto> countAccommodationsByCategory() {
         return accommodationRepository.findAll().stream()
                 .collect(Collectors.groupingBy(Accommodation::getCategory, Collectors.summingInt(accommodation -> 1)))
                 .entrySet()
                 .stream()
-                .map(entry -> new Statistics(entry.getKey(), entry.getValue()))
+                .map(entry -> new StatisticsDto(entry.getKey(), entry.getValue()))
                 .toList();
     }
 
+    @Override
+    public void refreshMaterializedView() {
+         accommodationsByHostViewRepository.refreshMaterializedView();
     }
+}

@@ -1,13 +1,17 @@
 package mk.finki.ukim.lab_emt.service.domain.impl;
 
 import jakarta.transaction.Transactional;
+import mk.finki.ukim.lab_emt.events.HostCreatedEvent;
 import mk.finki.ukim.lab_emt.model.domain.Guest;
 import mk.finki.ukim.lab_emt.model.domain.Host;
 import mk.finki.ukim.lab_emt.model.exceptions.HostNotFoundException;
+import mk.finki.ukim.lab_emt.model.projections.HostProjection;
 import mk.finki.ukim.lab_emt.repository.HostRepository;
+import mk.finki.ukim.lab_emt.repository.HostsByCountryViewRepository;
 import mk.finki.ukim.lab_emt.service.domain.CountryService;
 import mk.finki.ukim.lab_emt.service.domain.GuestService;
 import mk.finki.ukim.lab_emt.service.domain.HostService;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,11 +22,15 @@ public class HostServiceImpl implements HostService {
     private final HostRepository hostRepository;
     private final CountryService countryService;
     private final GuestService guestService;
+    private final HostsByCountryViewRepository hostsByCountryViewRepository;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
-    public HostServiceImpl(HostRepository hostRepository, CountryService countryService, GuestService guestService) {
+    public HostServiceImpl(HostRepository hostRepository, CountryService countryService, GuestService guestService, HostsByCountryViewRepository hostsByCountryViewRepository, ApplicationEventPublisher applicationEventPublisher) {
         this.hostRepository = hostRepository;
         this.countryService = countryService;
         this.guestService = guestService;
+        this.hostsByCountryViewRepository = hostsByCountryViewRepository;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     @Override
@@ -37,12 +45,14 @@ public class HostServiceImpl implements HostService {
 
     @Override
     public Optional<Host> save(Host host) {
+        Optional<Host> savedHost = Optional.empty();
         if (host.getCountry() != null &&
                 countryService.findByName(host.getCountry().getName()).isPresent()) {
-            return Optional.of(
+            savedHost =  Optional.of(
                     hostRepository.save(new Host(host.getName(), host.getSurname(), countryService.findByName(host.getCountry().getName()).get())));
+            this.applicationEventPublisher.publishEvent(new HostCreatedEvent(host));
         }
-        return Optional.empty();
+        return savedHost;
     }
 
     @Override
@@ -57,9 +67,17 @@ public class HostServiceImpl implements HostService {
             if (host.getCountry() != null && countryService.findByName(host.getCountry().getName()).isPresent()) {
                 existingHost.setCountry(countryService.findByName(host.getCountry().getName()).get());
             }
-            return hostRepository.save(existingHost);
+            Host updatedHost = hostRepository.save(existingHost);
+            this.applicationEventPublisher.publishEvent(new HostCreatedEvent(host));
+            return updatedHost;
         });
+    }
 
+    @Override
+    public void deleteById(Long hostId) {
+        Host hostToDelete = hostRepository.findById(hostId).orElseThrow(() -> new HostNotFoundException(hostId));
+        hostRepository.deleteById(hostId);
+        this.applicationEventPublisher.publishEvent(new HostCreatedEvent(hostToDelete));
     }
 
     @Override
@@ -86,4 +104,13 @@ public class HostServiceImpl implements HostService {
                 });
     }
 
+    @Override
+    public List<HostProjection> getNames() {
+        return hostRepository.takeNameAndSurnameByProjection();
+    }
+
+    @Override
+    public void refreshMaterializedView() {
+        hostsByCountryViewRepository.refreshMaterializedView();
+    }
 }

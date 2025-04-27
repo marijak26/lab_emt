@@ -2,9 +2,11 @@ package mk.finki.ukim.lab_emt.web;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import mk.finki.ukim.lab_emt.model.dto.CreateAccommodationDto;
-import mk.finki.ukim.lab_emt.model.dto.DisplayAccommodationDto;
-import mk.finki.ukim.lab_emt.model.dto.StatisticsDto;
+import mk.finki.ukim.lab_emt.dto.CreateAccommodationDto;
+import mk.finki.ukim.lab_emt.dto.DisplayAccommodationDto;
+import mk.finki.ukim.lab_emt.dto.StatisticsDto;
+import mk.finki.ukim.lab_emt.model.views.AccommodationsByHostView;
+import mk.finki.ukim.lab_emt.repository.AccommodationsByHostViewRepository;
 import mk.finki.ukim.lab_emt.service.application.AccommodationApplicationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,9 +18,11 @@ import java.util.List;
 @Tag(name = "Accommodation API", description = "Endpoints for managing accommodations")
 public class AccommodationController {
     private final AccommodationApplicationService accommodationApplicationService;
+    private final AccommodationsByHostViewRepository accommodationsByHostViewRepository;
 
-    public AccommodationController(AccommodationApplicationService accommodationApplicationService) {
+    public AccommodationController(AccommodationApplicationService accommodationApplicationService, AccommodationsByHostViewRepository accommodationsByHostViewRepository) {
         this.accommodationApplicationService = accommodationApplicationService;
+        this.accommodationsByHostViewRepository = accommodationsByHostViewRepository;
     }
 
     @Operation(summary = "Get all accommodations", description = "Retrieves a list of all available accommodations.")
@@ -86,5 +90,12 @@ public class AccommodationController {
     @GetMapping("/accommodationsByCategory")
     public List<StatisticsDto> countAccommodationsByCategory() {
         return accommodationApplicationService.countAccommodationsByCategory();
+    }
+
+    @Operation(summary = "Get accommodations by host",
+               description = "Retrieves a list of accommodations grouped by host.")
+    @GetMapping("/by-host")
+    public List<AccommodationsByHostView> getAccommodationsByHost() {
+        return accommodationsByHostViewRepository.findAll();
     }
 }

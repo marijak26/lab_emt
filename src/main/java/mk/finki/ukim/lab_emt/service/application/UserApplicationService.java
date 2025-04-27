@@ -1,9 +1,10 @@
 package mk.finki.ukim.lab_emt.service.application;
 
-import mk.finki.ukim.lab_emt.model.dto.CreateUserDto;
-import mk.finki.ukim.lab_emt.model.dto.DisplayUserDto;
-import mk.finki.ukim.lab_emt.model.dto.LoginUserDto;
+import mk.finki.ukim.lab_emt.dto.CreateUserDto;
+import mk.finki.ukim.lab_emt.dto.DisplayUserDto;
+import mk.finki.ukim.lab_emt.dto.LoginUserDto;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserApplicationService {
@@ -13,5 +14,7 @@ public interface UserApplicationService {
     Optional<DisplayUserDto> login(LoginUserDto loginUserDto);
 
     Optional<DisplayUserDto> findByUsername(String username);
+
+    List<DisplayUserDto> findAll();
 }
 

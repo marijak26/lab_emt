@@ -1,7 +1,7 @@
 package mk.finki.ukim.lab_emt.service.application.impl;
 
-import mk.finki.ukim.lab_emt.model.dto.CreateGuestDto;
-import mk.finki.ukim.lab_emt.model.dto.DisplayGuestDto;
+import mk.finki.ukim.lab_emt.dto.CreateGuestDto;
+import mk.finki.ukim.lab_emt.dto.DisplayGuestDto;
 import mk.finki.ukim.lab_emt.model.domain.Country;
 import mk.finki.ukim.lab_emt.service.application.GuestApplicationService;
 import mk.finki.ukim.lab_emt.service.domain.CountryService;

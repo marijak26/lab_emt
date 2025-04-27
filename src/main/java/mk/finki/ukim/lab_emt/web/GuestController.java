@@ -2,8 +2,8 @@ package mk.finki.ukim.lab_emt.web;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import mk.finki.ukim.lab_emt.model.dto.CreateGuestDto;
-import mk.finki.ukim.lab_emt.model.dto.DisplayGuestDto;
+import mk.finki.ukim.lab_emt.dto.CreateGuestDto;
+import mk.finki.ukim.lab_emt.dto.DisplayGuestDto;
 import mk.finki.ukim.lab_emt.service.application.GuestApplicationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

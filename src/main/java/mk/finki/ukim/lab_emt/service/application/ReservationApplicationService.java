@@ -1,7 +1,7 @@
 package mk.finki.ukim.lab_emt.service.application;
 
-import mk.finki.ukim.lab_emt.model.dto.DisplayAccommodationDto;
-import mk.finki.ukim.lab_emt.model.dto.ReservationDto;
+import mk.finki.ukim.lab_emt.dto.DisplayAccommodationDto;
+import mk.finki.ukim.lab_emt.dto.ReservationDto;
 
 import java.util.List;
 import java.util.Optional;

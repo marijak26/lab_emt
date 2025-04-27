@@ -1,4 +1,4 @@
-package mk.finki.ukim.lab_emt.model.dto;
+package mk.finki.ukim.lab_emt.dto;
 
 import mk.finki.ukim.lab_emt.model.domain.Country;
 import mk.finki.ukim.lab_emt.model.domain.Host;
@@ -19,7 +19,7 @@ public record DisplayHostDto(
                 host.getHostId(),
                 host.getName(),
                 host.getSurname(),
-                host.getCountry().getId(),
+                host.getCountry().getCountryId(),
                 DisplayGuestDto.from(host.getGuests())
         );
     }

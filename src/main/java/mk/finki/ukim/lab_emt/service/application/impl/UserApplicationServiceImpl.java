@@ -1,13 +1,14 @@
 package mk.finki.ukim.lab_emt.service.application.impl;
 
 import mk.finki.ukim.lab_emt.model.domain.User;
-import mk.finki.ukim.lab_emt.model.dto.CreateUserDto;
-import mk.finki.ukim.lab_emt.model.dto.DisplayUserDto;
-import mk.finki.ukim.lab_emt.model.dto.LoginUserDto;
+import mk.finki.ukim.lab_emt.dto.CreateUserDto;
+import mk.finki.ukim.lab_emt.dto.DisplayUserDto;
+import mk.finki.ukim.lab_emt.dto.LoginUserDto;
 import mk.finki.ukim.lab_emt.service.application.UserApplicationService;
 import mk.finki.ukim.lab_emt.service.domain.UserService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -43,6 +44,11 @@ public class UserApplicationServiceImpl implements UserApplicationService {
     @Override
     public Optional<DisplayUserDto> findByUsername(String username) {
         return Optional.of(DisplayUserDto.from(userService.findByUsername(username)));
+    }
+
+    @Override
+    public List<DisplayUserDto> findAll() {
+        return DisplayUserDto.from(userService.findAll());
     }
 }
 

@@ -2,10 +2,13 @@ package mk.finki.ukim.lab_emt.web;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import mk.finki.ukim.lab_emt.model.dto.CreateGuestDto;
-import mk.finki.ukim.lab_emt.model.dto.CreateHostDto;
-import mk.finki.ukim.lab_emt.model.dto.DisplayGuestDto;
-import mk.finki.ukim.lab_emt.model.dto.DisplayHostDto;
+import mk.finki.ukim.lab_emt.dto.CreateGuestDto;
+import mk.finki.ukim.lab_emt.dto.CreateHostDto;
+import mk.finki.ukim.lab_emt.dto.DisplayGuestDto;
+import mk.finki.ukim.lab_emt.dto.DisplayHostDto;
+import mk.finki.ukim.lab_emt.model.projections.HostProjection;
+import mk.finki.ukim.lab_emt.model.views.HostsByCountryView;
+import mk.finki.ukim.lab_emt.repository.HostsByCountryViewRepository;
 import mk.finki.ukim.lab_emt.service.application.HostApplicationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,9 +20,11 @@ import java.util.List;
 @Tag(name = "Host API", description = "Endpoints for managing hosts")
 public class HostController {
     private final HostApplicationService hostApplicationService;
+    private final HostsByCountryViewRepository hostsByCountryViewRepository;
 
-    public HostController(HostApplicationService hostApplicationService) {
+    public HostController(HostApplicationService hostApplicationService, HostsByCountryViewRepository hostsByCountryViewRepository) {
         this.hostApplicationService = hostApplicationService;
+        this.hostsByCountryViewRepository = hostsByCountryViewRepository;
     }
 
     @Operation(summary = "Get all hosts", description = "Retrieves a list of all available hosts.")
@@ -65,5 +70,32 @@ public class HostController {
                 .map(displayHostDto -> ResponseEntity.ok().body(displayHostDto))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+    @Operation(summary = "Delete a host", description = "Deletes a host by its ID.")
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        if (hostApplicationService.findById(id).isPresent()) {
+            hostApplicationService.deleteById(id);
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+
+    @Operation(summary = "Get hosts by country",
+            description = "Retrieves a list of hosts filtered by country.")
+    @GetMapping("/by-country")
+    public List<HostsByCountryView> getHostsByCountry(){
+        return hostsByCountryViewRepository.findAll();
+    }
+
+    @Operation(summary = "Get host names and surnames",
+            description = "Retrieves a list of host names and surnames.")
+    @GetMapping("/names")
+    public List<HostProjection> getHostNamesAndSurnames() {
+        return hostApplicationService.getHostNamesAndSurnames();
+    }
+
+
 
 }

@@ -1,7 +1,8 @@
 package mk.finki.ukim.lab_emt.service.domain;
 
 import mk.finki.ukim.lab_emt.model.domain.Accommodation;
-import mk.finki.ukim.lab_emt.model.domain.Statistics;
+import mk.finki.ukim.lab_emt.dto.StatisticsDto;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -13,5 +14,6 @@ public interface AccommodationService {
     Optional<Accommodation> update(Long accommodationId, Accommodation accommodation);
     void deleteById(Long accommodationId);
     Accommodation markAccommodationAsRented(Long accommodationId);
-    List<Statistics> countAccommodationsByCategory();
+    List<StatisticsDto> countAccommodationsByCategory();
+    void refreshMaterializedView();
 }
