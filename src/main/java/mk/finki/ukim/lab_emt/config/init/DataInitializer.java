@@ -1,4 +1,4 @@
-package mk.finki.ukim.lab_emt.config;
+package mk.finki.ukim.lab_emt.config.init;
 
 import jakarta.annotation.PostConstruct;
 import mk.finki.ukim.lab_emt.model.domain.*;

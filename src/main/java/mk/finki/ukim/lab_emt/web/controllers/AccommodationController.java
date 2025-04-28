@@ -1,4 +1,4 @@
-package mk.finki.ukim.lab_emt.web;
+package mk.finki.ukim.lab_emt.web.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
