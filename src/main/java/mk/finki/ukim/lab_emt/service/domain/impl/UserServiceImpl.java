@@ -2,12 +2,8 @@ package mk.finki.ukim.lab_emt.service.domain.impl;
 
 import mk.finki.ukim.lab_emt.model.domain.User;
 import mk.finki.ukim.lab_emt.model.enumerations.Role;
+import mk.finki.ukim.lab_emt.model.exceptions.*;
 import mk.finki.ukim.lab_emt.repository.UserRepository;
-import mk.finki.ukim.lab_emt.model.exceptions.InvalidArgumentsException;
-import mk.finki.ukim.lab_emt.model.exceptions.InvalidUsernameOrPasswordException;
-import mk.finki.ukim.lab_emt.model.exceptions.PasswordsDoNotMatchException;
-import mk.finki.ukim.lab_emt.model.exceptions.UsernameAlreadyExistsException;
-import mk.finki.ukim.lab_emt.model.exceptions.InvalidUserCredentialsException;
 import mk.finki.ukim.lab_emt.service.domain.UserService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -40,11 +36,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findAll() {
-        return userRepository.fetchAll();
-    }
-
-    @Override
     public User register(
             String username,
             String password,
@@ -64,11 +55,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User login(String username, String password) {
-        if (username == null || username.isEmpty() || password == null || password.isEmpty()) {
+        if (username == null || username.isEmpty() || password == null || password.isEmpty())
             throw new InvalidArgumentsException();
-        }
-        return userRepository.findByUsernameAndPassword(username, password).orElseThrow(
-                InvalidUserCredentialsException::new);
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException(username));
+        if (!passwordEncoder.matches(password, user.getPassword()))
+            throw new InvalidUserCredentialsException();
+        return user;
+    }
+
+    @Override
+    public List<User> findAll() {
+        return userRepository.fetchAll();
     }
 }
-
