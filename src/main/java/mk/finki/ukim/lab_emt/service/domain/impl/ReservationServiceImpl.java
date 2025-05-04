@@ -63,6 +63,25 @@ public class ReservationServiceImpl implements ReservationService {
             if(accommodation.isRented())
                 throw new AccommodationIsAlreadyRentedException(accommodationId);
             reservation.getAccommodations().add(accommodation);
+            accommodation.setRented(true);
+            accommodationService.update(accommodation.getId(), accommodation);
+            return Optional.of(reservationRepository.save(reservation));
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Reservation> removeAccommodationFromReservation(String username, Long accommodationId) {
+        if(getActiveReservation(username).isPresent()){
+            Reservation reservation = getActiveReservation(username).get();
+
+            Accommodation accommodation = accommodationService.findById(accommodationId)
+                    .orElseThrow(() -> new AccommodationNotFoundException(accommodationId));
+            if(reservation.getAccommodations().stream().filter(a -> a.getId().equals(accommodationId)).toList().isEmpty())
+                throw new AccommodationAlreadyInReservationException(accommodationId, username);
+            reservation.getAccommodations().remove(accommodation);
+            accommodation.setRented(false);
+            accommodationService.update(accommodation.getId(), accommodation);
             return Optional.of(reservationRepository.save(reservation));
         }
         return Optional.empty();
@@ -81,7 +100,7 @@ public class ReservationServiceImpl implements ReservationService {
         }
         reservation.getAccommodations().forEach(accommodation -> {
             accommodation.setRented(true);
-            accommodationService.save(accommodation);
+            accommodationService.update(accommodation.getId(), accommodation);
         });
         reservation.setStatus(ReservationStatus.CONFIRMED);
         return Optional.of(reservationRepository.save(reservation));
@@ -100,7 +119,7 @@ public class ReservationServiceImpl implements ReservationService {
         }
         reservation.getAccommodations().forEach(accommodation -> {
             accommodation.setRented(false);
-            accommodationService.save(accommodation);
+            accommodationService.update(accommodation.getId(), accommodation);
         });
         reservation.setStatus(ReservationStatus.CANCELED);
         return Optional.of(reservationRepository.save(reservation));

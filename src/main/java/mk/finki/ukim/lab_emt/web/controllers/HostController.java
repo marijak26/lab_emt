@@ -10,6 +10,7 @@ import mk.finki.ukim.lab_emt.model.projections.HostProjection;
 import mk.finki.ukim.lab_emt.model.views.HostsByCountryView;
 import mk.finki.ukim.lab_emt.repository.HostsByCountryViewRepository;
 import mk.finki.ukim.lab_emt.service.application.HostApplicationService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -85,8 +86,8 @@ public class HostController {
     @Operation(summary = "Get hosts by country",
             description = "Retrieves a list of hosts filtered by country.")
     @GetMapping("/by-country")
-    public List<HostsByCountryView> getHostsByCountry(){
-        return hostsByCountryViewRepository.findAll();
+    public ResponseEntity<?> getHostsByCountry(){
+        return ResponseEntity.status(HttpStatus.OK).body(hostApplicationService.findAllHostsByCountry());
     }
 
     @Operation(summary = "Get host names and surnames",

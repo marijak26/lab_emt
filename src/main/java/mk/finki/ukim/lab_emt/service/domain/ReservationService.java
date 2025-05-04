@@ -15,6 +15,7 @@ public interface ReservationService {
     Optional<Reservation> getActiveReservation(String username);
 
     Optional<Reservation> addAccommodationToReservation(String username, Long accommodationId);
+    Optional<Reservation> removeAccommodationFromReservation(String username, Long accommodationId);
 
     Optional<Reservation> confirmReservation(String username);
 

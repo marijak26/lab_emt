@@ -3,6 +3,7 @@ package mk.finki.ukim.lab_emt.service.domain.impl;
 import mk.finki.ukim.lab_emt.model.domain.User;
 import mk.finki.ukim.lab_emt.model.enumerations.Role;
 import mk.finki.ukim.lab_emt.model.exceptions.*;
+import mk.finki.ukim.lab_emt.model.projections.UserProjection;
 import mk.finki.ukim.lab_emt.repository.UserRepository;
 import mk.finki.ukim.lab_emt.service.domain.UserService;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -67,5 +68,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findAll() {
         return userRepository.fetchAll();
+    }
+
+    @Override
+    public List<UserProjection> findAllProjections() {
+        return userRepository.findAllProjectedBy();
     }
 }
