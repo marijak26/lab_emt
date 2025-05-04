@@ -8,12 +8,10 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import mk.finki.ukim.lab_emt.constants.JwtConstants;
 import mk.finki.ukim.lab_emt.helpers.JwtHelper;
-import mk.finki.ukim.lab_emt.model.domain.User;
 import mk.finki.ukim.lab_emt.dto.DisplayAccommodationDto;
 import mk.finki.ukim.lab_emt.dto.ReservationDto;
 import mk.finki.ukim.lab_emt.service.application.ReservationApplicationService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -54,9 +52,9 @@ public class ReservationController {
             ), @ApiResponse(responseCode = "404", description = "Reservation not found")}
     )
     @GetMapping
-    public ResponseEntity<ReservationDto> getActiveReservation(Authentication authentication) {
-        User user = (User) authentication.getPrincipal();
-        return reservationApplicationService.getActiveReservation(user.getUsername())
+    public ResponseEntity<ReservationDto> getActiveReservation(HttpServletRequest request) {
+        String username = extractUsernameFromRequest(request);
+        return reservationApplicationService.getActiveReservation(username)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
