@@ -38,6 +38,11 @@ public class ReservationApplicationServiceImpl implements ReservationApplication
     }
 
     @Override
+    public Optional<ReservationDto> removeAccommodationFromReservation(String username, Long accommodationId) {
+        return reservationService.removeAccommodationFromReservation(username, accommodationId).map(ReservationDto::from);
+    }
+
+    @Override
     public Optional<ReservationDto> confirmReservation(String username) {
         return reservationService.confirmReservation(username).map(ReservationDto::from);
     }

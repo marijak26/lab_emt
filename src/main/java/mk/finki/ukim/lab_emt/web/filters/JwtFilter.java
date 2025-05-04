@@ -64,6 +64,9 @@ public class JwtFilter extends OncePerRequestFilter {
                 );
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
+                System.out.println("Authorization header: " + headerValue);
+                System.out.println("Extracted token: " + token);
+                System.out.println("Extracted username: " + username);
             }
         } catch (JwtException jwtException) {
             handlerExceptionResolver.resolveException(
@@ -74,6 +77,7 @@ public class JwtFilter extends OncePerRequestFilter {
             );
             return;
         }
+
 
         filterChain.doFilter(request, response);
     }

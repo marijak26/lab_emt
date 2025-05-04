@@ -13,29 +13,14 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    Optional<User> findByUsernameAndPassword(String username, String password);
-
     Optional<User> findByUsername(String username);
 
     @EntityGraph(
             type = EntityGraph.EntityGraphType.FETCH,
-            attributePaths = {}
+            attributePaths = {"reservations"}
     )
     @Query("select u from User u")
     List<User> fetchAll();
 
-    @EntityGraph(
-            type = EntityGraph.EntityGraphType.LOAD,
-            attributePaths = {}
-    )
-    @Query("select u from User u")
-    List<User> loadAll();
-
-    UserProjection findByRole(Role role);
-
-    @Query("select u.username, u.name, u.surname from User u")
-    List<UserProjection> takeUsernameAndNameAndSurnameByProjection();
-
-
-
+    List<UserProjection> findAllProjectedBy();
 }

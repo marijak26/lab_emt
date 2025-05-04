@@ -6,6 +6,8 @@ import mk.finki.ukim.lab_emt.dto.DisplayGuestDto;
 import mk.finki.ukim.lab_emt.dto.DisplayHostDto;
 import mk.finki.ukim.lab_emt.model.domain.Country;
 import mk.finki.ukim.lab_emt.model.projections.HostProjection;
+import mk.finki.ukim.lab_emt.model.views.HostsByCountryView;
+import mk.finki.ukim.lab_emt.repository.HostsByCountryViewRepository;
 import mk.finki.ukim.lab_emt.service.application.GuestApplicationService;
 import mk.finki.ukim.lab_emt.service.application.HostApplicationService;
 import mk.finki.ukim.lab_emt.service.domain.CountryService;
@@ -20,11 +22,13 @@ import java.util.stream.Collectors;
 public class HostApplicationServiceImpl implements HostApplicationService {
 
     private final HostService hostService;
+    private final HostsByCountryViewRepository hostsByCountryViewRepository;
     private final CountryService countryService;
     private final GuestApplicationService guestApplicationService;
 
-    public HostApplicationServiceImpl(HostService hostService, CountryService countryService, GuestApplicationService guestApplicationService) {
+    public HostApplicationServiceImpl(HostService hostService, HostsByCountryViewRepository hostsByCountryViewRepository, CountryService countryService, GuestApplicationService guestApplicationService) {
         this.hostService = hostService;
+        this.hostsByCountryViewRepository = hostsByCountryViewRepository;
         this.countryService = countryService;
         this.guestApplicationService = guestApplicationService;
     }
@@ -88,5 +92,10 @@ public class HostApplicationServiceImpl implements HostApplicationService {
                         )
                 )
                 .map(DisplayHostDto::from);
+    }
+
+    @Override
+    public List<HostsByCountryView> findAllHostsByCountry() {
+        return hostsByCountryViewRepository.findAll();
     }
 }

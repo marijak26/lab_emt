@@ -11,6 +11,7 @@ import mk.finki.ukim.lab_emt.dto.LoginUserDto;
 import mk.finki.ukim.lab_emt.model.exceptions.InvalidArgumentsException;
 import mk.finki.ukim.lab_emt.model.exceptions.InvalidUserCredentialsException;
 import mk.finki.ukim.lab_emt.model.exceptions.PasswordsDoNotMatchException;
+import mk.finki.ukim.lab_emt.model.projections.UserProjection;
 import mk.finki.ukim.lab_emt.service.application.UserApplicationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,8 +31,8 @@ public class UserController {
 
     @Operation(summary = "Get all users", description = "Retrieves a list of all registered users")
     @GetMapping("/users")
-    public ResponseEntity<List<DisplayUserDto>> getAllUsers() {
-        return ResponseEntity.ok(userApplicationService.findAll());
+    public List<UserProjection> getAllUsers() {
+        return userApplicationService.findAllProjections();
     }
 
     @Operation(summary = "Register a new user", description = "Creates a new user account")

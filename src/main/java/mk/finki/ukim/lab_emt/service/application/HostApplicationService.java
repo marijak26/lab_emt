@@ -5,6 +5,7 @@ import mk.finki.ukim.lab_emt.dto.CreateHostDto;
 import mk.finki.ukim.lab_emt.dto.DisplayGuestDto;
 import mk.finki.ukim.lab_emt.dto.DisplayHostDto;
 import mk.finki.ukim.lab_emt.model.projections.HostProjection;
+import mk.finki.ukim.lab_emt.model.views.HostsByCountryView;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,4 +25,5 @@ public interface HostApplicationService {
     List<DisplayGuestDto> findGuestsByHostId(Long hostId);
 
     Optional<DisplayHostDto> saveGuest(Long hostId, CreateGuestDto createGuestDto);
+    List<HostsByCountryView> findAllHostsByCountry();
 }

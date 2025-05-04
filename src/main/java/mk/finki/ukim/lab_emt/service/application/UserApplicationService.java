@@ -4,6 +4,7 @@ import mk.finki.ukim.lab_emt.dto.CreateUserDto;
 import mk.finki.ukim.lab_emt.dto.DisplayUserDto;
 import mk.finki.ukim.lab_emt.dto.LoginResponseDto;
 import mk.finki.ukim.lab_emt.dto.LoginUserDto;
+import mk.finki.ukim.lab_emt.model.projections.UserProjection;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,5 +18,6 @@ public interface UserApplicationService {
     Optional<DisplayUserDto> findByUsername(String username);
 
     List<DisplayUserDto> findAll();
+    List<UserProjection> findAllProjections();
 }
 
