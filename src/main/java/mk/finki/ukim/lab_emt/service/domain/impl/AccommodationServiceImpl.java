@@ -42,6 +42,11 @@ public class AccommodationServiceImpl implements AccommodationService {
     }
 
     @Override
+    public Optional<Accommodation> findByIdWithHost(Long accommodationId) {
+        return accommodationRepository.findById(accommodationId);
+    }
+
+    @Override
     public Optional<Accommodation> save(Accommodation accommodation) {
         Optional<Accommodation> savedAccommodation = Optional.empty();
         if (accommodation.getHost() != null &&

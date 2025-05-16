@@ -1,6 +1,6 @@
 create materialized view accommodations_by_host as
-    select h.host_id       as host_id,
-           count(a.id) as accommodations_count
+select h.host_id       as host_id,
+       count(a.id) as accommodations_count
 from hosts h
          join
      accommodations a on a.host_host_id = h.host_id

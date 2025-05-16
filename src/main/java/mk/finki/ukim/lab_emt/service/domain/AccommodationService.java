@@ -10,6 +10,7 @@ public interface AccommodationService {
     List<Accommodation> findAll();
     List<Accommodation> findFree();
     Optional<Accommodation> findById(Long accommodationId);
+    Optional<Accommodation> findByIdWithHost(Long accommodationId);
     Optional<Accommodation> save(Accommodation accommodation);
     Optional<Accommodation> update(Long accommodationId, Accommodation accommodation);
     void deleteById(Long accommodationId);

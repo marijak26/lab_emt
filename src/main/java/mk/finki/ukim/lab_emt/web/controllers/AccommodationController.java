@@ -3,6 +3,7 @@ package mk.finki.ukim.lab_emt.web.controllers;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import mk.finki.ukim.lab_emt.dto.CreateAccommodationDto;
+import mk.finki.ukim.lab_emt.dto.DisplayAccommodationByIdDto;
 import mk.finki.ukim.lab_emt.dto.DisplayAccommodationDto;
 import mk.finki.ukim.lab_emt.dto.StatisticsDto;
 import mk.finki.ukim.lab_emt.model.views.AccommodationsByHostView;
@@ -43,6 +44,13 @@ public class AccommodationController {
         return accommodationApplicationService.findById(id)
                 .map(ResponseEntity::ok).
                 orElse(ResponseEntity.notFound().build());
+    }
+    @Operation(summary = "Get accommodation by ID with host", description = "Retrieves a accommodation by its ID along with the host information.")
+    @GetMapping("/{id}/details")
+    public ResponseEntity<DisplayAccommodationByIdDto> findByIdWithHost(@PathVariable Long id) {
+        return accommodationApplicationService.findByIdWithHost(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @Operation(summary = "Add a new accommodation", description = "Creates a new accommodation.")

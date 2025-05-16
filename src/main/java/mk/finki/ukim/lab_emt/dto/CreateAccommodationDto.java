@@ -2,7 +2,7 @@ package mk.finki.ukim.lab_emt.dto;
 
 import mk.finki.ukim.lab_emt.model.enumerations.Category;
 import mk.finki.ukim.lab_emt.model.domain.Host;
-    import mk.finki.ukim.lab_emt.model.domain.Accommodation;
+import mk.finki.ukim.lab_emt.model.domain.Accommodation;
 
 import java.util.List;
 import java.util.stream.Collectors;

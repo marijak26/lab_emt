@@ -1,5 +1,6 @@
 package mk.finki.ukim.lab_emt.service.application.impl;
 
+import mk.finki.ukim.lab_emt.dto.DisplayAccommodationByIdDto;
 import mk.finki.ukim.lab_emt.model.domain.Host;
 import mk.finki.ukim.lab_emt.dto.CreateAccommodationDto;
 import mk.finki.ukim.lab_emt.dto.DisplayAccommodationDto;
@@ -36,6 +37,12 @@ public class AccommodationApplicationServiceImpl implements AccommodationApplica
     public Optional<DisplayAccommodationDto> findById(Long accommodationId) {
         return accommodationService.findById(accommodationId)
                 .map(DisplayAccommodationDto::from);
+    }
+
+    @Override
+    public Optional<DisplayAccommodationByIdDto> findByIdWithHost(Long accommodationId) {
+        return accommodationService.findByIdWithHost(accommodationId)
+                .map(DisplayAccommodationByIdDto::from);
     }
 
     @Override
