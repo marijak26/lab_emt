@@ -57,15 +57,16 @@ public class JwtSecurityWebConfig {
                                                 "/api/user/login"
                                         )
                                         .permitAll()
-//                                        .requestMatchers(
-//                                                "/api/accommodations/**",
-//                                                "/api/countries/**",
-//                                                "/api/guests/**",
-//                                                "/api/hosts/**",
-//                                                "/api/reservation/**"
-//                                        )
+                                        .requestMatchers(
+                                                "/api/countries",
+                                                "/api/hosts",
+                                                "/api/accommodations"
+                                        )
+                                        .permitAll()
+    //                                .hasAnyRole("USER", "HOST")
                                         .anyRequest()
-                                        .hasAnyRole("USER", "HOST")
+                                        .permitAll()
+//                                .hasRole("HOST")
                 )
                 .sessionManagement(sessionManagementConfigurer ->
                         sessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -76,4 +77,5 @@ public class JwtSecurityWebConfig {
     }
 
 }
+
 

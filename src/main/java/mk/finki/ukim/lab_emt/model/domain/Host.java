@@ -26,7 +26,7 @@ public class Host {
 //    @Enumerated(value = EnumType.STRING)
 //    private Role role;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "hosts_guests",
             joinColumns = @JoinColumn(name = "hostId"),

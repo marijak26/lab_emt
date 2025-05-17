@@ -10,7 +10,7 @@ public record DisplayHostDto(
         Long id,
         String name,
         String surname,
-        Long country,
+        Long countryId,
         List<DisplayGuestDto> guests
 ) {
 

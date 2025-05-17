@@ -30,3 +30,8 @@ values (1, 'Smestuvanje 1', 'ROOM', 1, 1, false),
        (8, 'Smestuvanje 8', 'APARTMENT', 3, 3, false),
        (9, 'Smestuvanje 9', 'MOTEL', 5, 1, false),
        (10, 'Smestuvanje 10', 'APARTMENT', 4, 4, false);
+
+SELECT setval('countries_country_id_seq', (SELECT MAX(country_id) FROM countries));
+SELECT setval('hosts_host_id_seq', (SELECT MAX(host_id) FROM hosts));
+SELECT setval('guests_guest_id_seq', (SELECT MAX(guest_id) FROM guests));
+SELECT setval('accommodations_id_seq', (SELECT MAX(id) FROM accommodations));

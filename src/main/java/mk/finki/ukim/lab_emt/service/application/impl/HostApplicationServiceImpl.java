@@ -46,7 +46,7 @@ public class HostApplicationServiceImpl implements HostApplicationService {
 
     @Override
     public Optional<DisplayHostDto> save(CreateHostDto createHostDto) {
-        Optional<Country> country = countryService.findById(createHostDto.country());
+        Optional<Country> country = countryService.findById(createHostDto.countryId());
         if (country.isPresent()) {
             return hostService.save(createHostDto.toHost(country.get()))
                     .map(DisplayHostDto::from);
@@ -56,7 +56,7 @@ public class HostApplicationServiceImpl implements HostApplicationService {
 
     @Override
     public Optional<DisplayHostDto> update(Long hostId, CreateHostDto createHostDto) {
-        Optional<Country> country = countryService.findById(createHostDto.country());
+        Optional<Country> country = countryService.findById(createHostDto.countryId());
         return hostService.update(hostId,
                         createHostDto.toHost(
                                 country.orElse(null)
@@ -85,7 +85,7 @@ public class HostApplicationServiceImpl implements HostApplicationService {
 
     @Override
     public Optional<DisplayHostDto> saveGuest(Long hostId, CreateGuestDto createGuestDto) {
-        Optional<Country> country = countryService.findById(createGuestDto.country());
+        Optional<Country> country = countryService.findById(createGuestDto.countryId());
         guestApplicationService.save(createGuestDto);
         return hostService.saveGuest(hostId,
                         createGuestDto.toGuest(country.orElse(null)

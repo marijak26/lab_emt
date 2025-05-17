@@ -34,7 +34,7 @@ public class GuestApplicationServiceImpl implements GuestApplicationService {
 
     @Override
     public Optional<DisplayGuestDto> save(CreateGuestDto createGuestDto) {
-        Optional<Country> country = countryService.findById(createGuestDto.country());
+        Optional<Country> country = countryService.findById(createGuestDto.countryId());
         if (country.isPresent()) {
             return guestService.save(createGuestDto.toGuest(country.get()))
                     .map(DisplayGuestDto::from);
@@ -44,7 +44,7 @@ public class GuestApplicationServiceImpl implements GuestApplicationService {
 
     @Override
     public Optional<DisplayGuestDto> update(Long guestId, CreateGuestDto createGuestDto) {
-        Optional<Country> country = countryService.findById(createGuestDto.country());
+        Optional<Country> country = countryService.findById(createGuestDto.countryId());
         return guestService.update(guestId,
                         createGuestDto.toGuest(
                                 country.orElse(null)

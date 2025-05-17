@@ -11,7 +11,7 @@ create table if not exists guests
     name       varchar(255),
     surname    varchar(255),
     country_id bigint,
-    foreign key (country_id) references countries (id)
+    foreign key (country_id) references countries (id) on delete SET NULL
 );
 
 create table if not exists hosts
@@ -20,7 +20,7 @@ create table if not exists hosts
     name       varchar(255),
     surname    varchar(255),
     country_id bigint,
-    foreign key (country_id) references countries (id)
+    foreign key (country_id) references countries (id) on delete SET NULL
 );
 
 create table if not exists hosts_guests
@@ -28,8 +28,8 @@ create table if not exists hosts_guests
     host_id  bigint,
     guest_id bigint,
     primary key (host_id, guest_id),
-    foreign key (host_id) references hosts (id),
-    foreign key (guest_id) references guests (id)
+    foreign key (host_id) references hosts (id) on delete SET NULL,
+    foreign key (guest_id) references guests (id) on delete SET NULL
 );
 
 create table if not exists accommodations
@@ -40,7 +40,7 @@ create table if not exists accommodations
     host_id  bigint,
     numRooms int,
     isRented boolean,
-    foreign key (host_id) references hosts (id)
+    foreign key (host_id) references hosts (id) on delete SET NULL
 );
 
 create table if not exists users
@@ -72,6 +72,28 @@ create table if not exists reservations_accommodations
     reservation_id   bigint not null,
     accommodation_id bigint not null,
     primary key (reservation_id, accommodation_id),
-    foreign key (reservation_id) references reservations (id),
-    foreign key (accommodation_id) references accommodations (id)
+    foreign key (reservation_id) references reservations (id) on delete SET NULL,
+    foreign key (accommodation_id) references accommodations (id) on delete SET NULL
 );
+
+ALTER TABLE accommodations
+    ALTER COLUMN host_id DROP NOT NULL;
+
+ALTER TABLE guests
+    ALTER COLUMN country_id DROP NOT NULL;
+
+ALTER TABLE hosts
+    ALTER COLUMN country_id DROP NOT NULL;
+
+ALTER TABLE hosts_guests
+    ALTER COLUMN host_id DROP NOT NULL;
+
+ALTER TABLE hosts_guests
+    ALTER COLUMN guest_id DROP NOT NULL;
+
+ALTER TABLE reservations_accommodations
+    ALTER COLUMN reservation_id DROP NOT NULL;
+
+ALTER TABLE reservations_accommodations
+    ALTER COLUMN accommodation_id DROP NOT NULL;
+

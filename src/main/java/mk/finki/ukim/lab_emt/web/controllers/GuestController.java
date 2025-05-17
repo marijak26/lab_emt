@@ -38,8 +38,8 @@ public class GuestController {
     @PostMapping("/add")
     public ResponseEntity<DisplayGuestDto> save(@RequestBody CreateGuestDto createGuestDto) {
         return guestApplicationService.save(createGuestDto)
-                .map(displayGuestDto -> ResponseEntity.ok().body(displayGuestDto))
-                .orElseGet(() -> ResponseEntity.badRequest().build());
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @Operation(summary = "Update an existing guest", description = "Updates an existing guest by its ID.")

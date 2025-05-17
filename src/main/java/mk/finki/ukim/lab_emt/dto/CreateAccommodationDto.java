@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 public record CreateAccommodationDto (
         String name,
         Category category,
-        Long host,
+        Long hostId,
         Integer numRooms
 ) {
     public static CreateAccommodationDto from(Accommodation accommodation) {

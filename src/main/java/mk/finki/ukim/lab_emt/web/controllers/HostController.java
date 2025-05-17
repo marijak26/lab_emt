@@ -52,8 +52,8 @@ public class HostController {
     @PostMapping("/add")
     public ResponseEntity<DisplayHostDto> save(@RequestBody CreateHostDto createHostDto) {
         return hostApplicationService.save(createHostDto)
-                .map(displayHostDto -> ResponseEntity.ok().body(displayHostDto))
-                .orElseGet(() -> ResponseEntity.badRequest().build());
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @Operation(summary = "Add a guest to a host", description = "Adds a guest to a specific host.")
@@ -77,7 +77,7 @@ public class HostController {
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         if (hostApplicationService.findById(id).isPresent()) {
             hostApplicationService.deleteById(id);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
     }

@@ -12,4 +12,5 @@ public interface CountryApplicationService {
     Optional<DisplayCountryDto> findByName(String name);
     Optional<DisplayCountryDto> save(CreateCountryDto createCountryDto);
     Optional<DisplayCountryDto> update(Long countryId, CreateCountryDto createCountryDto);
+    void deleteById(Long countryId);
 }

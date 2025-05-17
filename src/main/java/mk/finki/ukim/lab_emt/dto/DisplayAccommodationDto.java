@@ -10,7 +10,7 @@ public record DisplayAccommodationDto (
         Long id,
         String name,
         Category category,
-        Long host,
+        Long hostId,
         Integer numRooms
 ) {
 

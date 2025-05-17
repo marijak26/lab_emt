@@ -43,4 +43,9 @@ public class CountryApplicationServiceImpl implements CountryApplicationService 
         return countryService.update(countryId, createCountryDto.toCountry())
                 .map(DisplayCountryDto::from);
     }
+
+    @Override
+    public void deleteById(Long countryId) {
+        countryService.deleteById(countryId);
+    }
 }

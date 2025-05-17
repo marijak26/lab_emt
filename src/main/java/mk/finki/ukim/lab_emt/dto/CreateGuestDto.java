@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 public record CreateGuestDto(
         String name,
         String surname,
-        Long country
+        Long countryId
 ) {
     public static CreateGuestDto from(Guest guest) {
         return new CreateGuestDto(

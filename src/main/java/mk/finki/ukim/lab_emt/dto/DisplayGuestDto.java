@@ -10,7 +10,7 @@ public record DisplayGuestDto(
         Long id,
         String name,
         String surname,
-        Long country
+        Long countryId
 ) {
 
     public static DisplayGuestDto from(Guest guest) {
